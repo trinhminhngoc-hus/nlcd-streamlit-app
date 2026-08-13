@@ -1,20 +1,31 @@
+import json
 import ee
 import streamlit as st
 import importlib
 import geemap as geemap_package
+from google.oauth2 import service_account
 
-# Ép nạp đúng module geemap.basemaps
+# Sửa tương thích geemap.foliumap
 geemap_package.basemaps = importlib.import_module("geemap.basemaps")
-
 import geemap.foliumap as geemap
 
-# Khởi tạo Google Earth Engine
-try:
-    ee.Initialize(project="gee-ngoc-2025")
-except Exception:
-    ee.Authenticate()
-    ee.Initialize(project="gee-ngoc-2025")
+PROJECT_ID = "gee-ngoc-2025"
 
+# Khởi tạo Earth Engine trên Streamlit Cloud
+service_account_info = dict(st.secrets["gcp_service_account"])
+
+credentials = service_account.Credentials.from_service_account_info(
+    service_account_info,
+    scopes=[
+        "https://www.googleapis.com/auth/earthengine",
+        "https://www.googleapis.com/auth/cloud-platform",
+    ],
+)
+
+ee.Initialize(
+    credentials=credentials,
+    project=PROJECT_ID,
+)
 
 def get_nlcd(year):
     dataset = ee.ImageCollection(
