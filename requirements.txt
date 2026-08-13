@@ -1,13 +1,3 @@
---find-links=https://girder.github.io/large_image_wheels/ GDAL
-deadlink
-geemap
-geopandas
-ghp-import
-jupytext
-jupyter-book
-keplergl
-localtileserver
-matplotlib
-numpy
-osmnx
-pyppeteer
+streamlit
+geemap==0.38.3
+earthengine-api
